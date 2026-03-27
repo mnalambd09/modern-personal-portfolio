@@ -1379,6 +1379,18 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
+            {/* আপনার নতুন ছবি */}
+            <div className="mb-10 flex justify-center">
+              <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl ring-8 ring-blue-50 dark:ring-blue-900/10">
+                <img 
+                  src="https://i.ibb.co/hJs0qXv8/photo.png" 
+                  alt="MD NOORALAM" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            </div>
+
             <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-900/20 rounded-full">
               Available for new projects
             </span>
@@ -1386,21 +1398,9 @@ export default function App() {
               MD <span className="gradient-text">NOORALAM</span> <br />
               Supervisor & Developer.
             </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
-              16 years of global experience in Mechanical Engineering combined with modern web technology. Building the future of industrial and digital solutions.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#projects" className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 dark:shadow-none flex items-center justify-center gap-2">
-                View My Work <ChevronRight size={18} />
-              </a>
-              <button 
-                onClick={() => toast.success("Resume Download Started", { description: "Your CV is being prepared for download." })}
-                className="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
-              >
-                Download CV <Download size={18} />
-              </button>
-            </div>
-          </motion.div>
+            
+            {/* মনে করে এই নিচের ট্যাগটি চেক করবেন */}
+          </motion.div> 
         </div>
       </section>
 
