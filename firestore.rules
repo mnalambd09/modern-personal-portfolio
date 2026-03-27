@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: messages
+    // Fields:
+    //   - name: string (required)
+    //   - email: string (required, email format)
+    //   - message: string (required, max 5000 chars)
+    //   - createdAt: timestamp (required)
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (request.auth.token.email.lower() == "mnalambd09@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidMessage(data) {
+      return data.keys().hasAll(['name', 'email', 'message', 'read', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.message is string && data.message.size() > 0 && data.message.size() < 5000 &&
+             data.read is bool &&
+             data.createdAt is timestamp;
+    }
+
+    match /messages/{messageId} {
+      // Anyone can send a message
+      allow create: if isValidMessage(request.resource.data) && request.resource.data.read == false;
+      
+      // Only admin can read, update, or delete messages
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /subscribers/{subscriberId} {
+      allow create: if request.resource.data.keys().hasAll(['email', 'createdAt']) &&
+                      request.resource.data.email is string &&
+                      request.resource.data.createdAt is timestamp;
+      allow read, delete: if isAdmin();
+    }
+
+    match /analytics/{viewId} {
+      allow create: if true; // Allow anyone to record a page view
+      allow read: if isAdmin();
+    }
+
+    match /newsletters/{newsletterId} {
+      allow create, read: if isAdmin();
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
